@@ -1,12 +1,13 @@
 import { UnitTemplate } from "../Unit";
 
 export const Peasant: UnitTemplate = {
+  label:"Peasant",
   cost: 10,
   income: 0.1,
   income_alive: 0.5,
   loot: 10,
   spawn_cooldown: 1000,
-  speed: 0.3,
+  speed: 32,
   range: 32,
   health: 3,
   damage: 1,

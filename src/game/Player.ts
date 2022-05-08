@@ -1,6 +1,7 @@
 import { Game } from "./Game";
-import { UnitInstance } from "./Unit";
+import { UnitInstance, UnitTemplate } from "./Unit";
 import * as PIXI from "pixi.js"
+import { Peasant } from "./units/peasant";
 
 /**
  * A Player contains all data related to an active Player, like spawned monsters, resources, etc
@@ -9,6 +10,7 @@ export class Player
 {
   money : number = 0;
   income : number = 0; // money per second
+  deck:UnitTemplate[] = [Peasant];
 
   constructor()
   {

@@ -3,16 +3,24 @@ import { Level } from "./Level";
 import { Spriteful } from "./Spriteful";
 import { Vector2 } from "./TypeDefinitions";
 
+export interface BuildingTemplate
+{
+  sprite:string;
+  health:number;
+}
+
 /**
  *
  */
 export class Building extends Spriteful implements Damageable
 {
   health: number;
+  template:BuildingTemplate;
 
-  constructor(level: Level, position: Vector2)
+  constructor(level: Level, position: Vector2, template:BuildingTemplate)
   {
-    super(level, position);
+    super(level, position, template.sprite);
+    this.health = template.health;
   }
 
   die(): void

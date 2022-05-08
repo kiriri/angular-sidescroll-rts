@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as PIXI from "pixi.js";
 import { Game } from 'src/game/Game';
 import { Level } from 'src/game/Level';
@@ -13,13 +13,13 @@ import { Peasant } from 'src/game/units/peasant';
 })
 export class ViewportComponent implements OnInit
 {
+  @Input()
+  game:Game;
 
   private app: PIXI.Application = new PIXI.Application({
     width: window.innerWidth,
     height: window.innerHeight
   });
-
-  game:Game;
 
   clicked = false;
 
@@ -35,18 +35,23 @@ export class ViewportComponent implements OnInit
   {
     document.body.appendChild(this.app.view);
 
-    let game = this.game = new Game(this.app);
+    this.game.set_pixi(this.app);
+
 
     // let level = new Level(game,{width:2000});
 
 
 
+    let last_update = Date.now();
     // Listen for animate update
     this.app.ticker.add((delta) => {
+
+      delta = (Date.now()-last_update)/1000;
+      last_update = Date.now();
         // just for fun, let's rotate mr rabbit a little
         // delta is 1 if running at 100% performance
         // creates frame-independent transformation
-        game.active_level.update(delta);
+        this.game.active_level.update(delta);
     });
   }
 

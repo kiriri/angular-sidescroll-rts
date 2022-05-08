@@ -29,19 +29,21 @@ export class Spriteful
     }
   }
 
-  _create_sprite(url:string = 'assets/images/Chess_blt45.svg')
+  _create_sprite(url:string = 'assets/images/Chess_blt45.svg') : PIXI.Sprite
   {
     const position = this._position;
     const sprite = this.sprite = PIXI.Sprite.from(url);
 
     // center the sprite's anchor point
-    sprite.anchor.set(0.5);
+    sprite.anchor.set(0.5,1);
 
     // // set the sprite to the center of the screen
     sprite.x = position[0];
     sprite.y = position[1];
 
     this.level.container.addChild(sprite);
+
+    return sprite;
   }
 
   destroy()

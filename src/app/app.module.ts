@@ -6,11 +6,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatButtonModule} from '@angular/material/button';
 import { ViewportComponent } from './viewport/viewport.component';
+import { UiComponent } from './ui/ui.component';
+import { SpawnmenuComponent } from './spawnmenu/spawnmenu.component';
+import { SpawnmenuItemComponent } from './spawnmenu/item/item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ViewportComponent
+    ViewportComponent,
+    UiComponent,
+    SpawnmenuComponent,
+    SpawnmenuItemComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { Player } from "./Player";
 import { Viewport } from "pixi-viewport";
 import { Peasant } from "./units/peasant";
 import { Base } from "./Base";
+import { Building } from "./Building";
 
 export interface LevelTemplate
 {
@@ -18,25 +19,50 @@ export class Level
 {
   players: [Player, Player] = [new Player(), new Player()];
   units: Set<UnitInstance>[] = [new Set(), new Set()];
+  bases : [Base,Base];
   game: Game;
 
   container: PIXI.Container;
+  viewport: Viewport;
+
+  template : LevelTemplate;
 
   constructor(game: Game, template: LevelTemplate)
   {
     this.game = game;
+    this.template = template;
+
+    this.container = new PIXI.Container();
+
+
+    if(game.app)
+    {
+      this.initialize_viewport();
+    }
+
+    let height = 400;
+
+    let base_0 = new Base(0,this,[100,height]);
+    let base_1 = new Base(1,this,[template.width-100,height]);
+
+    this.bases = [base_0,base_1];
+
+    let peasant = new UnitInstance(0,this,Peasant,[base_0.sprite.position.x,height]);
+    let peasant2 = new UnitInstance(1,this,Peasant,[base_1.sprite.position.x,height]);
+  }
+
+  initialize_viewport()
+  {
+    console.log("INIT")
     const viewport = new Viewport({
       screenWidth: window.innerWidth,
       screenHeight: window.innerHeight,
-      worldWidth: template.width,
+      worldWidth: this.template.width,
       worldHeight:1,
 
 
-      interaction: game.app.renderer.plugins["interaction"] // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
+      interaction: this.game.app.renderer.plugins["interaction"] // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
     })
-
-    // add the viewport to the stage
-    game.app.stage.addChild(viewport)
 
     // activate plugins
     viewport
@@ -45,22 +71,14 @@ export class Level
       .wheel()
       .decelerate()
       .clamp({ direction: "x", underflow:"center" })
-      .clampZoom({ maxWidth:  Math.max(template.width + 200, window.innerWidth), minWidth: Math.min(template.width,500) })
+      .clampZoom({ maxWidth:  Math.max(this.template.width + 200, window.innerWidth), minWidth: Math.min(this.template.width,500) })
 
-    this.container = viewport;
+    viewport.addChild(this.container);
 
+    this.viewport = viewport;
 
-
-
-
-    let base_0 = new Base(this,[100,this.game.app.screen.height / 2]);
-    let base_1 = new Base(this,[template.width-100,this.game.app.screen.height / 2]);
-
-    let peasant = new UnitInstance(0,this,Peasant,[base_0.sprite.position.x,this.game.app.screen.height / 2]);
-    let peasant2 = new UnitInstance(1,this,Peasant,[base_1.sprite.position.x,this.game.app.screen.height / 2]);
-
-
-
+    // add the viewport to the stage
+    this.game.app.stage.addChild(viewport);
 
   }
 
@@ -84,6 +102,10 @@ export class Level
    */
   update(delta: number)
   {
+    // console.log(delta)
+    this.players[0].money += delta * this.players[0].income;
+    this.players[1].money += delta * this.players[1].income;
+
     this.units[0].forEach(v =>
     {
       v.update(delta);

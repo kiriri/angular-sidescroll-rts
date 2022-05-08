@@ -10,6 +10,7 @@ export interface UnitAnimation
 
 export interface UnitDescriptor
 {
+  label: string;
   cost: number;
   income: number; // awarded permanently
   income_alive: number; // awarded per second while alive
@@ -85,12 +86,13 @@ export class UnitInstance extends Spriteful implements Damageable
     this.template = template;
     this.health = template.health;
 
+    this.level.players[player].income += template.income;
+
     this.level.add_unit(this);
   }
 
   die(): void
   {
-    console.log("DEATH");
     this.dead = true;
 
   }
@@ -114,6 +116,10 @@ export class UnitInstance extends Spriteful implements Damageable
 
   update(delta: number)
   {
+    // console.log(this.template.income_alive * delta);
+    // console.log(this.template.income_alive)
+    this.level.players[this.player].money += this.template.income_alive * delta;
+
     let enemy = this.find_enemy();
     if(enemy !== undefined)
     {

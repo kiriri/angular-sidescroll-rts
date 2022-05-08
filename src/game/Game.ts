@@ -10,14 +10,21 @@ export class Game
 
   active_level : Level;
 
-  constructor(app : PIXI.Application)
+  constructor()
   {
-    this.set_pixi(app);
-    this.active_level = new Level(this,{width:300});
+    // this.set_pixi(app);
+    this.active_level = new Level(this,{width:2000});
   }
 
   set_pixi(app : PIXI.Application)
   {
     this.app = app;
+
+    if(this.active_level)
+    {
+      // add the viewport to the stage
+      this.active_level.initialize_viewport();
+      // this.active_level.container.
+    }
   }
 }
