@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as PIXI from "pixi.js";
+import { Game } from 'src/game/Game';
+import { Level } from 'src/game/Level';
+import { UnitInstance } from 'src/game/Unit';
+import { Peasant } from 'src/game/units/peasant';
 
 
 @Component({
@@ -15,6 +19,8 @@ export class ViewportComponent implements OnInit
     height: window.innerHeight
   });
 
+  game:Game;
+
   clicked = false;
 
   constructor() { }
@@ -29,23 +35,19 @@ export class ViewportComponent implements OnInit
   {
     document.body.appendChild(this.app.view);
 
-    const bunny = PIXI.Sprite.from('assets/images/Chess_blt45.svg');
+    let game = this.game = new Game(this.app);
 
-    // center the sprite's anchor point
-    bunny.anchor.set(0.5);
+    let level = new Level(game,{width:2000});
 
-    // move the sprite to the center of the screen
-    bunny.x = this.app.screen.width / 2;
-    bunny.y = this.app.screen.height / 2;
-
-    this.app.stage.addChild(bunny);
+    let peasant = new UnitInstance(0,level,Peasant,[level.game.app.screen.width / 2,level.game.app.screen.height / 2]);
+    let peasant2 = new UnitInstance(1,level,Peasant,[level.game.app.screen.width / 2,level.game.app.screen.height / 2]);
 
     // Listen for animate update
     this.app.ticker.add((delta) => {
         // just for fun, let's rotate mr rabbit a little
         // delta is 1 if running at 100% performance
         // creates frame-independent transformation
-        bunny.position.x += .3 * delta;
+        level.update(delta);
     });
   }
 

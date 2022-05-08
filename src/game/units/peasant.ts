@@ -6,6 +6,7 @@ export const Peasant: UnitTemplate = {
   income_alive: 0.5,
   loot: 10,
   spawn_cooldown: 1000,
+  speed: 0.3,
   range: 1,
   health: 3,
   damage: 1,
@@ -36,4 +37,10 @@ export const Peasant: UnitTemplate = {
     ]
 
   ],
+  size:[64,64],
+  animations: {
+    idle: { url: "assets/images/Chess_blt45.svg", duration: 1000 },
+    walk: { url: "assets/images/Chess_blt45.svg", duration: 1000 },
+    attack: { url: "assets/images/Chess_blt45.svg", duration: 1000 }
+  }
 }
