@@ -41,7 +41,7 @@ export const Peasant: UnitTemplate = {
   size:[64,64],
   animations: {
     idle: { url: "assets/images/Chess_plt45.svg", duration: 1000 },
-    walk: { url: "assets/images/Chess_plt45.svg", duration: 1000 },
+    walk: { url: "assets/images/pesant_walkcycle.png", duration: 1000 },
     attack: { url: "assets/images/Chess_plt45.svg", duration: 1000 }
   }
 }
