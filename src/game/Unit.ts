@@ -4,8 +4,8 @@
 
 export interface UnitAnimation
 {
-  url:string; // path to spritesheet, should be in "assets/..."
-  duration:number; // in ms
+  url: string; // path to spritesheet, should be in "assets/..."
+  duration: number; // in ms
 }
 
 export interface UnitDescriptor
@@ -22,8 +22,8 @@ export interface UnitDescriptor
   attack_cooldown: number; // in ms
   damage_trigger_delay: number; // how many ms to wait after attack animation has started, before damage is applied?
   splash: number; // if 0, don't splash at all
-  size : Vector2; // in pixels
-  animations: {idle:UnitAnimation,walk:UnitAnimation,attack:UnitAnimation}; // path to animation sprite sheets
+  size: Vector2; // in pixels
+  animations: { idle: UnitAnimation, walk: UnitAnimation, attack: UnitAnimation }; // path to animation sprite sheets
 }
 
 export interface UnitTemplate extends UnitDescriptor
@@ -39,69 +39,125 @@ export interface UnitUpgrade
 {
   label: string;
   description: string;
-  add?:Partial<UnitDescriptor>;
-  multiply?:Partial<UnitDescriptor>;
+  add?: Partial<UnitDescriptor>;
+  multiply?: Partial<UnitDescriptor>;
 }
 
 import * as PIXI from "pixi.js";
+import { Building } from "./Building";
+import { Damageable } from "./Damageable";
 import { Level } from "./Level";
+import { Spriteful } from "./Spriteful";
 import { Vector2 } from "./TypeDefinitions";
 
-export class UnitInstance
+export class UnitInstance extends Spriteful implements Damageable
 {
   /**
    * The template that describes this unit.
    */
-  template:UnitTemplate;
+  template: UnitTemplate;
   /**
    * The current health of the unit.
    */
-  health:number;
+  health: number;
   /**
    * The timestamp of the last attack.
    */
-  last_attack:number = 0;
+  last_attack: number = 0;
 
   /**
    * Index of the player that owns this unit.
    */
-  player:number;
+  player: number;
 
-  level : Level;
-  sprite:PIXI.Sprite;
+  /**
+   * Units can remain dead until the end of the frame to make sure their attack goes off.
+   * (Think mirror matchup, both should die, instead of only the one who's update loop is processed last)
+   */
+  dead:boolean;
 
-  constructor(player:number, level : Level, template:UnitTemplate, position : Vector2)
+
+
+  constructor(player: number, level: Level, template: UnitTemplate, position: Vector2)
   {
+    super(level, position, template.animations.idle.url);
     this.player = player;
-    this.level = level;
     this.template = template;
     this.health = template.health;
 
-    this._create_sprite(position);
+    this.level.add_unit(this);
+  }
 
-    this.level.units[player].add(this);
-
-
+  die(): void
+  {
+    console.log("DEATH");
+    this.dead = true;
 
   }
 
-  _create_sprite(position : Vector2)
+  take_damage(v: number): void
   {
-    const sprite = this.sprite = PIXI.Sprite.from('assets/images/Chess_blt45.svg');
-
-    // center the sprite's anchor point
-    sprite.anchor.set(0.5);
-
-    // // set the sprite to the center of the screen
-    sprite.x = position[0];
-    sprite.y = position[1];
-
-    this.level.container.addChild(sprite);
+    this.health -= v;
+    console.log(this.health);
+    if(this.health <= 0) // TODO : Make it so the dead target can still get a hit off
+    {
+      this.die();
+    }
   }
 
-  update(delta:number)
+  get_damage()
   {
-    this.sprite.position.x += (this.player ? -1 : 1) * this.template.speed * delta;
+    return this.template.damage;
+  }
+
+
+
+  update(delta: number)
+  {
+    let enemy = this.find_enemy();
+    if(enemy !== undefined)
+    {
+      let cooldown = Date.now() - this.last_attack;
+
+      if(cooldown >= this.template.attack_cooldown)
+      {
+        this.last_attack = Date.now();
+        enemy.take_damage(this.get_damage());
+      }
+    }
+    else
+    {
+      this.set_position(this._position[0] + (this.player ? -1 : 1) * this.template.speed * delta);
+    }
+  }
+
+  /**
+   * Return a unit if one is in range, or undefined otherwise
+   */
+  find_enemy(): UnitInstance | Building | undefined
+  {
+    let enemies = this.level.units[this.player === 0 ? 1 : 0];
+    let closest_target:UnitInstance;
+    let closest_distance = Infinity;
+    enemies.forEach(v=>{
+      let dist = Math.abs(v._position[0] - this._position[0]);
+      if(dist < closest_distance)
+      {
+        closest_target = v;
+        closest_distance = dist;
+      }
+    })
+    if(closest_distance < this.template.range)
+    {
+      return closest_target;
+    }
+    return undefined;
+  }
+
+  override destroy(): void
+  {
+    this.level.remove_unit(this);
+    super.destroy();
   }
 
 

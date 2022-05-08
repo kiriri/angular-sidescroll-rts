@@ -13,7 +13,7 @@ export class Game
   constructor(app : PIXI.Application)
   {
     this.set_pixi(app);
-    this.active_level = new Level(this,{width:2000});
+    this.active_level = new Level(this,{width:300});
   }
 
   set_pixi(app : PIXI.Application)

@@ -37,17 +37,16 @@ export class ViewportComponent implements OnInit
 
     let game = this.game = new Game(this.app);
 
-    let level = new Level(game,{width:2000});
+    // let level = new Level(game,{width:2000});
 
-    let peasant = new UnitInstance(0,level,Peasant,[level.game.app.screen.width / 2,level.game.app.screen.height / 2]);
-    let peasant2 = new UnitInstance(1,level,Peasant,[level.game.app.screen.width / 2,level.game.app.screen.height / 2]);
+
 
     // Listen for animate update
     this.app.ticker.add((delta) => {
         // just for fun, let's rotate mr rabbit a little
         // delta is 1 if running at 100% performance
         // creates frame-independent transformation
-        level.update(delta);
+        game.active_level.update(delta);
     });
   }
 

@@ -7,7 +7,7 @@ export const Peasant: UnitTemplate = {
   loot: 10,
   spawn_cooldown: 1000,
   speed: 0.3,
-  range: 1,
+  range: 32,
   health: 3,
   damage: 1,
   attack_cooldown: 1000,
@@ -39,8 +39,8 @@ export const Peasant: UnitTemplate = {
   ],
   size:[64,64],
   animations: {
-    idle: { url: "assets/images/Chess_blt45.svg", duration: 1000 },
-    walk: { url: "assets/images/Chess_blt45.svg", duration: 1000 },
-    attack: { url: "assets/images/Chess_blt45.svg", duration: 1000 }
+    idle: { url: "assets/images/Chess_plt45.svg", duration: 1000 },
+    walk: { url: "assets/images/Chess_plt45.svg", duration: 1000 },
+    attack: { url: "assets/images/Chess_plt45.svg", duration: 1000 }
   }
 }
