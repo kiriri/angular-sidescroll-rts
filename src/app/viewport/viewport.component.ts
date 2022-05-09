@@ -18,7 +18,8 @@ export class ViewportComponent implements OnInit
 
   private app: PIXI.Application = new PIXI.Application({
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
+    backgroundColor: 0x2980b9
   });
 
   clicked = false;
@@ -36,10 +37,6 @@ export class ViewportComponent implements OnInit
     document.body.appendChild(this.app.view);
 
     this.game.set_pixi(this.app);
-
-
-    // let level = new Level(game,{width:2000});
-
 
 
     let last_update = Date.now();

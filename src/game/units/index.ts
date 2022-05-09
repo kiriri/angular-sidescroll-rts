@@ -1,7 +1,9 @@
+import { Horse } from "./horse";
 import { Peasant } from "./peasant";
 
 const units = [
-  Peasant
+  Peasant,
+  Horse
 ];
 
 export default units;

@@ -19,7 +19,7 @@ export class Building extends Spriteful implements Damageable
 
   constructor(level: Level, position: Vector2, template:BuildingTemplate)
   {
-    super(level, position, template.sprite);
+    super(level, position, {url:template.sprite});
     this.health = template.health;
   }
 

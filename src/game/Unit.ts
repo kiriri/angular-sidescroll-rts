@@ -48,8 +48,11 @@ import * as PIXI from "pixi.js";
 import { Building } from "./Building";
 import { Damageable } from "./Damageable";
 import { Level } from "./Level";
+import { ResourceLoader } from "./ResourceLoader";
 import { Spriteful } from "./Spriteful";
 import { Vector2 } from "./TypeDefinitions";
+
+export const UNITS : Record<string,UnitTemplate> = {};
 
 export class UnitInstance extends Spriteful implements Damageable
 {
@@ -77,11 +80,13 @@ export class UnitInstance extends Spriteful implements Damageable
    */
   dead:boolean;
 
+  animation_frame:number = 0;
+
 
 
   constructor(player: number, level: Level, template: UnitTemplate, position: Vector2)
   {
-    super(level, position, template.animations.idle.url);
+    super(level, position, {url:template.animations.idle.url,size:template.size});
     this.player = player;
     this.template = template;
     this.health = template.health;
@@ -89,6 +94,8 @@ export class UnitInstance extends Spriteful implements Damageable
     this.level.players[player].income += template.income;
 
     this.level.add_unit(this);
+
+    this.set_animation("idle");
   }
 
   die(): void
@@ -112,10 +119,36 @@ export class UnitInstance extends Spriteful implements Damageable
     return this.template.damage;
   }
 
+  override current_animation ?: {name:keyof UnitTemplate["animations"], frame:number, frame_size:Vector2, length:number, duration:number, start_time:number}
+  set_animation(name:keyof UnitTemplate["animations"])
+  {
+    let anim = this.template.animations[name];
+
+    ResourceLoader.load_texture(anim.url).then(texture=>
+    {
+      this.set_texture(texture);
+      let frame_count = texture.baseTexture.width / this.template.size[0]; // how many frames?
+
+      this.current_animation = {name,frame:0,length:frame_count,duration:anim.duration,start_time:Date.now(), frame_size:this.template.size};
+      // console.log(frame_count)
+    });
+  }
+
+  update_animation()
+  {
+    if(this.current_animation)
+    {
+      let frame = Math.floor((Date.now() - this.current_animation.start_time) * this.current_animation.length / this.current_animation.duration)
+      this.current_animation.frame = frame;
+      this.set_animation_frame(frame);
+    }
+  }
+
 
 
   update(delta: number)
   {
+    this.update_animation();
     this.sprite.cursor
     // console.log(this.template.income_alive * delta);
     // console.log(this.template.income_alive)

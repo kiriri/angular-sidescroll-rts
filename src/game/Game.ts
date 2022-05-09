@@ -1,5 +1,8 @@
 import * as PIXI from "pixi.js";
 import { Level } from "./Level";
+import Units from "./units";
+
+console.log("Loaded units ", Units);
 
 /**
  * The Game (pseudo-)singleton contains all game related data. It is the highest level data container.
