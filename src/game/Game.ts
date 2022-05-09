@@ -14,6 +14,7 @@ export class Game
   {
     // this.set_pixi(app);
     this.active_level = new Level(this,{width:2000});
+
   }
 
   set_pixi(app : PIXI.Application)

@@ -1,4 +1,8 @@
+import { ResourceLoader } from "../ResourceLoader";
 import { UnitTemplate } from "../Unit";
+
+ResourceLoader.add_texture("assets/images/Chess_plt45.svg");
+ResourceLoader.add_texture("assets/images/pesant_walkcycle.png");
 
 export const Peasant: UnitTemplate = {
   label:"Peasant",

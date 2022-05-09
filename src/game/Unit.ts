@@ -116,6 +116,7 @@ export class UnitInstance extends Spriteful implements Damageable
 
   update(delta: number)
   {
+    this.sprite.cursor
     // console.log(this.template.income_alive * delta);
     // console.log(this.template.income_alive)
     this.level.players[this.player].money += this.template.income_alive * delta;

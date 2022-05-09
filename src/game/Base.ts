@@ -1,8 +1,10 @@
 import { Building } from "./Building";
 import { Level } from "./Level";
+import { ResourceLoader } from "./ResourceLoader";
 import { Vector2 } from "./TypeDefinitions";
 import { UnitInstance, UnitTemplate } from "./Unit";
 
+ResourceLoader.add_texture("assets/images/base.png");
 
 export const BaseTemplate:UnitTemplate = {
   health:100,

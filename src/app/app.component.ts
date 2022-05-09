@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Injectable, Input } from '@angular/core';
 import { Game } from 'src/game/Game';
 
-let game = new Game();
+
 
 @Component({
   selector: 'app-root',
@@ -10,5 +10,6 @@ let game = new Game();
 })
 export class AppComponent {
   title = 'angular-sidescroll-rts';
-  game = game;
+  game : Game = window["game"];
+
 }
