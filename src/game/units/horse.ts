@@ -6,15 +6,15 @@ ResourceLoader.add_texture("assets/images/pesant_walkcycle.png");
 
 export const Horse: UnitTemplate = {
   label:"Horse",
-  cost: 10,
-  income: 0.1,
-  income_alive: 0.5,
-  loot: 10,
-  spawn_cooldown: 1000,
-  speed: 32,
-  range: 32,
-  health: 3,
-  damage: 1,
+  cost: 100,
+  income: 1,
+  income_alive: 5,
+  loot: 100,
+  spawn_cooldown: 10000,
+  speed: 100,
+  range: 40,
+  health: 10,
+  damage: 2,
   attack_cooldown: 1000,
   damage_trigger_delay: 300,
   splash: 0,
@@ -44,8 +44,8 @@ export const Horse: UnitTemplate = {
   ],
   size:[64,64],
   animations: {
-    idle: { url: "assets/images/pesant_walkcycle.png", duration: 1000 },
-    walk: { url: "assets/images/pesant_walkcycle.png", duration: 1000 },
-    attack: { url: "assets/images/Chess_plt45.svg", duration: 1000 }
+    idle: { url: "assets/images/Horse_walk.png", duration: 1000 },
+    walk: { url: "assets/images/Horse_walk.png", duration: 1000 },
+    attack: { url: "assets/images/Horse_Attacc.png", duration: 1000 }
   }
 }
