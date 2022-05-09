@@ -1,4 +1,4 @@
-<div class="spawn-item" (click)="click()">
+<div class="spawn-item" [ngClass]="{'inactive': game.active_level.players[0].money < template.cost || (window.Date.now() - game.active_level.players[0].last_spawn_time[template.label]) < template.spawn_cooldown}" (click)="click()" >
   <span class="unit-cost">{{template.cost}}</span>
   <span class="unit-name">{{template.label}}</span>
 </div>

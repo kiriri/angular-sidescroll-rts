@@ -17,7 +17,7 @@ export interface LevelTemplate
  */
 export class Level
 {
-  players: [Player, Player] = [new Player(), new Player()];
+  players: [Player, Player] = [new Player(0,this), new Player(1,this)];
   units: Set<UnitInstance>[] = [new Set(), new Set()];
   bases : [Base,Base];
   game: Game;
@@ -40,7 +40,7 @@ export class Level
       this.initialize_viewport();
     }
 
-    let height = 400;
+    let height = 0;
 
     let base_0 = new Base(0,this,[100,height]);
     let base_1 = new Base(1,this,[template.width-100,height]);
@@ -74,6 +74,7 @@ export class Level
       .clampZoom({ maxWidth:  Math.max(this.template.width + 200, window.innerWidth), minWidth: Math.min(this.template.width,500) })
 
     viewport.addChild(this.container);
+    this.container.position.y = window.innerHeight/2;
 
     this.viewport = viewport;
 

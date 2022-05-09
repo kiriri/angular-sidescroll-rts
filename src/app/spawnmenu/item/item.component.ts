@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Game } from 'src/game/Game';
 import { UnitInstance, UnitTemplate } from 'src/game/Unit';
 
+
+
 @Component({
   selector: 'app-spawnmenu-item',
   templateUrl: './item.component.html',
@@ -13,6 +15,8 @@ export class SpawnmenuItemComponent implements OnInit {
   @Input()
   game:Game;
 
+  window = window;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -20,7 +24,7 @@ export class SpawnmenuItemComponent implements OnInit {
 
   click()
   {
-    new UnitInstance(0,this.game.active_level,this.template,[...this.game.active_level.bases[0]._position]);
+    this.game.active_level.players[0].spawn_unit(this.template);
   }
 
 }

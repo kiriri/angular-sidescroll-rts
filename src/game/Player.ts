@@ -1,4 +1,5 @@
 import { Game } from "./Game";
+import { Level } from "./Level";
 import { UnitInstance, UNITS, UnitTemplate } from "./Unit";
 import units from "./units";
 
@@ -10,9 +11,21 @@ export class Player
   money : number = 0;
   income : number = 0; // money per second
   deck:UnitTemplate[] = [...Object.values(units)];
+  last_spawn_time : Record<string,number> = {}
+  index: number;
+  level: Level;
 
-  constructor()
+  constructor(index:number,level:Level)
   {
+    this.level = level;
+    this.index = index;
+  }
+
+  spawn_unit(template:UnitTemplate)
+  {
+    new UnitInstance(0,this.level,template,[...this.level.bases[0]._position]);
+    this.level.players[0].last_spawn_time[template.label] = Date.now();
+    this.money -= template.cost;
   }
 
   /**

@@ -1,9 +1,10 @@
+@use '../template.scss' as t;
 
 .spawnmenu
 {
   width: 100%;
   height: 120px;
-  background-color: blue;
+  background-color: t.$panel1;
   position: absolute;
   bottom:0;
   pointer-events: fill;
