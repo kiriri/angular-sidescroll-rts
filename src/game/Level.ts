@@ -47,7 +47,7 @@ export class Level
 
     this.bases = [base_0,base_1];
 
-    let peasant = new UnitInstance(0,this,Peasant,[base_0.sprite.position.x,height]);
+    // let peasant = new UnitInstance(0,this,Peasant,[base_0.sprite.position.x,height]);
     let peasant2 = new UnitInstance(1,this,Peasant,[base_1.sprite.position.x,height]);
   }
 
@@ -62,7 +62,7 @@ export class Level
 
 
       interaction: this.game.app.renderer.plugins["interaction"] // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
-    })
+    });
 
     // activate plugins
     viewport

@@ -8,7 +8,7 @@ import units from "./units";
  */
 export class Player
 {
-  money : number = 0;
+  money : number = 100;
   income : number = 0; // money per second
   deck:UnitTemplate[] = [...Object.values(units)];
   last_spawn_time : Record<string,number> = {}

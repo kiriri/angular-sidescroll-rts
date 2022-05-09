@@ -146,6 +146,7 @@ export class UnitInstance extends Spriteful implements Damageable
 
 
 
+  has_attacked = false; // resets when a new animation starts, set to true after attack_delay
   update(delta: number)
   {
     this.level.players[this.player].money += this.template.income_alive * delta;
@@ -155,6 +156,12 @@ export class UnitInstance extends Spriteful implements Damageable
     let cooldown = Date.now() - this.last_attack;
     if(cooldown < this.template.attack_cooldown)
     {
+      if(!this.has_attacked && (cooldown > this.template.damage_trigger_delay) )
+      {
+        let enemy = this.find_enemy();
+        this.has_attacked = true;
+        enemy?.take_damage(this.get_damage());
+      }
       return;
     }
 
@@ -163,7 +170,7 @@ export class UnitInstance extends Spriteful implements Damageable
     {
         this.last_attack = Date.now();
         this.set_animation("attack");
-        enemy.take_damage(this.get_damage());
+        this.has_attacked = false;
     }
     else
     {
