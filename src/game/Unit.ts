@@ -119,7 +119,7 @@ export class UnitInstance extends Spriteful implements Damageable
     return this.template.damage;
   }
 
-  override current_animation ?: {name:keyof UnitTemplate["animations"], frame:number, frame_size:Vector2, length:number, duration:number, start_time:number}
+  override current_animation ?: {name:keyof UnitTemplate["animations"], frame:number, frame_size:Vector2, length:number, duration:number, start_time:number};
   set_animation(name:keyof UnitTemplate["animations"])
   {
     let anim = this.template.animations[name];
@@ -148,27 +148,30 @@ export class UnitInstance extends Spriteful implements Damageable
 
   update(delta: number)
   {
-    this.update_animation();
-    this.sprite.cursor
-    // console.log(this.template.income_alive * delta);
-    // console.log(this.template.income_alive)
     this.level.players[this.player].money += this.template.income_alive * delta;
+
+    this.update_animation();
+
+    let cooldown = Date.now() - this.last_attack;
+    if(cooldown < this.template.attack_cooldown)
+    {
+      return;
+    }
 
     let enemy = this.find_enemy();
     if(enemy !== undefined)
     {
-      let cooldown = Date.now() - this.last_attack;
-
-      if(cooldown >= this.template.attack_cooldown)
-      {
         this.last_attack = Date.now();
+        this.set_animation("attack");
         enemy.take_damage(this.get_damage());
-      }
     }
     else
     {
+      if(this.current_animation?.name != "walk")
+        this.set_animation("walk");
       this.set_position(this._position[0] + (this.player ? -1 : 1) * this.template.speed * delta);
     }
+
   }
 
   /**

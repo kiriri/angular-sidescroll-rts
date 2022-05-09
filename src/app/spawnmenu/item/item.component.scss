@@ -1,10 +1,51 @@
+@use '../../template.scss' as t;
+
+@mixin outline($col) {
+  text-shadow:
+   -1px -1px 0 $col,
+    1px -1px 0 $col,
+    -1px 1px 0 $col,
+     1px 1px 0 $col;
+}
+
+@mixin buttonize()
+{
+  user-select: none;
+
+  &:hover
+  {
+    // background-color: t.$col1_h;
+    filter:brightness(120%) contrast(120%);
+  }
+
+  &:active
+  {
+    // background-color: t.$col1_h;
+    filter:brightness(80%) contrast(150%);
+  }
+}
 
 .spawn-item
 {
+  position: relative;
+
   width: 80px;
   height: 80px;
-  border: 1px solid white;
-  position: relative;
+  margin:2px;
+  padding:4px;
+
+  border-width: 4px;
+  border-style: groove;
+  border-color: white;
+
+  background-color: t.$col1;
+
+  color:#fff;
+  font-weight: 800;
+  font-size: large;
+  @include outline(t.$col2);
+
+  @include buttonize();
 
   .unit-name
   {

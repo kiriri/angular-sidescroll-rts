@@ -16,7 +16,7 @@ export const Horse: UnitTemplate = {
   health: 10,
   damage: 2,
   attack_cooldown: 1000,
-  damage_trigger_delay: 300,
+  damage_trigger_delay: 500,
   splash: 0,
   upgrades: [
     [
