@@ -1,3 +1,5 @@
 <!-- <button mat-flat-button color="primary">Hello !!!</button> -->
 <app-viewport class="app" [game]="game"></app-viewport>
 <app-ui [game]="game"></app-ui>
+<app-modal [visible]="game.active_level.winner === 0">You win!</app-modal>
+<app-modal [visible]="game.active_level.winner === 1">You lose!</app-modal>

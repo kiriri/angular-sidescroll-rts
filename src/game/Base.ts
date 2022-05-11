@@ -26,7 +26,16 @@ export const BaseTemplate:UnitTemplate = {
   },
   spawn_cooldown:Infinity,
   splash:0,
-  upgrades:[[],[],[]]
+  upgrades:[[],[],[]],
+  on_death:function(this:UnitInstance){
+    if(this.player === 0)
+    {
+      this.level.winner = 1;
+    }
+    else
+    this.level.winner = 0;
+
+  }
 }
 
 /**

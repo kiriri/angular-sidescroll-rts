@@ -33,7 +33,9 @@ export interface UnitTemplate extends UnitDescriptor
     UnitUpgrade[],
     UnitUpgrade[],
     UnitUpgrade[]
-  ]
+  ],
+  on_spawn?:(this:UnitInstance)=>void,
+  on_death?:(this:UnitInstance)=>void,
 }
 
 export interface UnitUpgrade
@@ -96,12 +98,14 @@ export class UnitInstance extends Spriteful implements Damageable
     this.level.add_unit(this);
 
     this.set_animation("idle");
+
+    this.template.on_spawn?.apply(this);
   }
 
   die(): void
   {
     this.dead = true;
-
+    this.template.on_death?.apply(this);
   }
 
   take_damage(v: number): void

@@ -76,8 +76,14 @@ export class ResourceLoader
 
   }
 
+  static depth = 0;
   static async do_load() : Promise<void>
   {
+    this.depth++;
+    if(this.depth > 20)
+    {
+      throw new Error("Too many loads in a row"); // TODO : Remove once the Bug is resolved
+    }
     return new Promise<void>((resolve)=>{
     loader.load(()=>
     {

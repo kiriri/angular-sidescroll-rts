@@ -27,6 +27,8 @@ export class Level
 
   template : LevelTemplate;
 
+  winner : number = -1;
+
   constructor(game: Game, template: LevelTemplate)
   {
     this.game = game;

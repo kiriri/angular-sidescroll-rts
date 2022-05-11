@@ -9,6 +9,7 @@ import { ViewportComponent } from './viewport/viewport.component';
 import { UiComponent } from './ui/ui.component';
 import { SpawnmenuComponent } from './spawnmenu/spawnmenu.component';
 import { SpawnmenuItemComponent } from './spawnmenu/item/item.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SpawnmenuItemComponent } from './spawnmenu/item/item.component';
     ViewportComponent,
     UiComponent,
     SpawnmenuComponent,
-    SpawnmenuItemComponent
+    SpawnmenuItemComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -26,4 +28,6 @@ import { SpawnmenuItemComponent } from './spawnmenu/item/item.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}

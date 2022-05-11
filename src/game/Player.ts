@@ -8,14 +8,14 @@ import units from "./units";
  */
 export class Player
 {
-  money : number = 100;
+  money : number = 100; // currently held money
   income : number = 0; // money per second
-  deck:UnitTemplate[] = [...Object.values(units)];
-  last_spawn_time : Record<string,number> = {}
-  index: number;
+  deck:UnitTemplate[] = [...Object.values(units)]; // all units this player can spawn
+  last_spawn_time : Record<string,number> = {}; // unit-name -> last timestamp a unit was spawned
+  index: 0|1; // Index in level players array
   level: Level;
 
-  constructor(index:number,level:Level)
+  constructor(index:0|1,level:Level)
   {
     this.level = level;
     this.index = index;
@@ -23,9 +23,14 @@ export class Player
 
   spawn_unit(template:UnitTemplate)
   {
-    new UnitInstance(0,this.level,template,[...this.level.bases[0]._position]);
+    new UnitInstance(0,this.level,template,[this.level.bases[0]._position[0], this.level.bases[0]._position[1] - Math.random() * 25]);
     this.level.players[0].last_spawn_time[template.label] = Date.now();
     this.money -= template.cost;
+  }
+
+  get_last_spawn_time(template:UnitTemplate) : number
+  {
+    return this.last_spawn_time[template.label] ?? 0;
   }
 
   /**
