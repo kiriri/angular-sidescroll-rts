@@ -11,6 +11,7 @@ export interface UnitAnimation
 export interface UnitDescriptor
 {
   label: string;
+  description:string;
   cost: number;
   income: number; // awarded permanently
   income_alive: number; // awarded per second while alive

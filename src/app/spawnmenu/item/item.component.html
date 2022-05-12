@@ -1,4 +1,4 @@
-<div class="spawn-item" [ngClass]="{'inactive': !can_spawn()}" (click)="click()"
+<div class="spawn-item" [ngClass]="{'inactive': !game.active_level.players[0].can_spawn(template)}" (click)="click()"
 >
   <div class="unit-progress" [style.transform]="get_progress()"></div>
   <span class="unit-cost">{{template.cost}}</span>

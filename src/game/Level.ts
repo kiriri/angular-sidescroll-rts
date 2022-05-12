@@ -29,6 +29,8 @@ export class Level
 
   winner : number = -1;
 
+  time : number = Date.now();
+
   constructor(game: Game, template: LevelTemplate)
   {
     this.game = game;
@@ -107,6 +109,9 @@ export class Level
   {
     if(this.winner >= 0)
       return;
+
+    this.time += delta * 1000;
+
     // console.log(delta)
     this.players[0].money += delta * this.players[0].income;
     this.players[1].money += delta * this.players[1].income;

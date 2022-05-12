@@ -33,23 +33,11 @@ export class SpawnmenuItemComponent {
     // console.log()
   }
 
-  can_spawn():boolean
-  {
-    let result = (this.game.active_level.players[0].money >= this.template.cost) && (this._get_progress() >= 1);
-    return result;
-  }
 
-  _get_progress():number
-  {
-
-    let result = Math.min(1, (this.time - this.game.active_level.players[0].get_last_spawn_time(this.template)) / this.template.spawn_cooldown);
-
-    return result;
-  }
 
   get_progress():string
   {
-    let progress = this._get_progress()
+    let progress = this.game.active_level.players[0].get_unit_progress(this.template);
     return `translateY( ${ 50 - progress * 50}% ) scaleY(${progress * 100}%) `;
   }
 

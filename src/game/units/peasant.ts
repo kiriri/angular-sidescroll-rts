@@ -6,6 +6,7 @@ ResourceLoader.add_texture("assets/images/pesant_walkcycle.png");
 
 export const Peasant: UnitTemplate = {
   label:"Peasant",
+  description:"Pheasant",
   cost: 10,
   income: 0.1,
   income_alive: 0.5,

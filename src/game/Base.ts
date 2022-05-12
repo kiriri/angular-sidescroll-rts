@@ -16,6 +16,7 @@ export const BaseTemplate:UnitTemplate = {
   attack_cooldown:Infinity,
   damage_trigger_delay:0,
   label:"Base",
+  description:"Base",
   loot:0,
   range:0,
   size:[128,256],

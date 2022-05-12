@@ -30,7 +30,7 @@ export class Player
   spawn_unit(template:UnitTemplate)
   {
     new UnitInstance(0,this.level,template,[this.level.bases[0]._position[0], this.level.bases[0]._position[1] - Math.random() * 25]);
-    this.level.players[0].last_spawn_time[template.label] = Date.now();
+    this.level.players[0].last_spawn_time[template.label] = this.level.time;
     this.money -= template.cost;
   }
 
@@ -60,7 +60,21 @@ export class Player
 
   upgrade_unit(template:UnitTemplate, upgrade:UnitUpgrade)
   {
+    if(!(template.label in this.upgrades))
+      this.upgrades[template.label] = [];
     this.upgrades[template.label].push(upgrade);
+  }
+
+  get_unit_progress(template:UnitTemplate) : number
+  {
+    return Math.min(1, (this.level.time - this.level.players[0].get_last_spawn_time(template)) / template.spawn_cooldown);
+  }
+
+  can_spawn(template:UnitTemplate):boolean
+  {
+
+    let result = (this.level.players[0].money >= template.cost) && (this.get_unit_progress(template) >= 1);
+    return result;
   }
 
   /**
@@ -71,5 +85,15 @@ export class Player
   {
     delta /= 1000; // to seconds
     this.money += this.income * delta;
+
+    // If this player is an AI
+    if(this.index > 0)
+    {
+      if(this.money > this.get_deck()[0].cost)
+      {
+        console.log("SPAWN")
+        this.spawn_unit(this.get_deck()[0]);
+      }
+    }
   }
 }

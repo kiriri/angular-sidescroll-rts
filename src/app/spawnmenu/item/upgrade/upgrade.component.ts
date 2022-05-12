@@ -21,9 +21,11 @@ export class UpgradeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  click()
+  click(e:MouseEvent)
   {
-
+    this.game.active_level.players[0].upgrade_unit(this.template,this.upgrade);
+    e.preventDefault();
+    e.stopPropagation();
   }
 
 }
