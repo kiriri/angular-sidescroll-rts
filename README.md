@@ -10,11 +10,9 @@ Code by Sven Hollesen. Art by Lars Hollesen.
 - Run "convert *.png +append sprites.png"
 
 ## TODO Sven :
-- Handle bad image urls gracefully. Particularly in preload
-- Enemy Player AI
-- Unit XP
 - Ranged unit / projectiles
 - Deck Management UI
+- Level Selection UI
 - P2P Multiplayer
 
 ## TODO Lars :
