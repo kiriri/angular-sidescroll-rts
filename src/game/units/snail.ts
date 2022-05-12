@@ -7,7 +7,7 @@ ResourceLoader.add_texture("assets/images/snail_walk.png");
 export const Snail: UnitTemplate = {
   label:"Snail",
   description:"Had a trauma after visiting france and consumed a hoverboard as a child",
-  cost: 50,
+  cost: 500,
   income: 5,
   income_alive: 25,
   loot: 100,

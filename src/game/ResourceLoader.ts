@@ -4,7 +4,11 @@ const loader = PIXI.Loader.shared;
 
 // throughout the process multiple signals can be dispatched.
 loader.onProgress.add(() => {}); // called once per loaded/errored file
-loader.onError.add(() => {}); // called once per errored file
+loader.onError.add((e,b,a) => {
+  console.error(e);
+  QUEUED_RESOURCES[a.name]?.forEach(v=>v?.(undefined));
+  delete QUEUED_RESOURCES[a.name];
+}); // called once per errored file
 loader.onLoad.add((a,b) =>
 {
   if(b.texture)

@@ -100,16 +100,19 @@ export class Player
    */
   update(delta:number)
   {
-    delta /= 1000; // to seconds
     this.money += this.income * delta;
+    // delta /= 1000; // to seconds
 
     // If this player is an AI
     if(!this.is_player())
     {
-      if(this.can_spawn(this.get_deck()[0]))
+      let deck = this.get_deck();
+      for(let i = 0; i < deck.length; i++)
       {
-        console.log("SPAWN")
-        this.spawn_unit(this.get_deck()[0]);
+        if(this.can_spawn(deck[i]))
+        {
+          this.spawn_unit(deck[i]);
+        }
       }
     }
   }

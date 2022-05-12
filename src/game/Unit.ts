@@ -101,6 +101,8 @@ export class UnitInstance extends Spriteful implements Damageable
 
     this.set_animation("idle");
 
+
+    this.level.players[player].income += this.template.income_alive;
     this.template.on_spawn?.apply(this);
   }
 
@@ -174,6 +176,8 @@ export class UnitInstance extends Spriteful implements Damageable
   do_attack()
   {
     let enemy = this.target = this.find_enemy();
+    if(enemy === undefined)
+      return;
 
     let damage = this.get_damage();
 
@@ -201,7 +205,6 @@ export class UnitInstance extends Spriteful implements Damageable
   has_attacked = false; // resets when a new animation starts, set to true after attack_delay
   update(delta: number)
   {
-    this.level.players[this.player].money += this.template.income_alive * delta;
 
     this.update_animation();
 
@@ -235,6 +238,8 @@ export class UnitInstance extends Spriteful implements Damageable
     let closest_distance = Infinity;
     enemies.forEach(v =>
     {
+      if(v.dead)
+        return;
       let dist = Math.abs(v._position[0] - this._position[0]);
       if (dist < closest_distance)
       {
@@ -251,6 +256,7 @@ export class UnitInstance extends Spriteful implements Damageable
 
   override destroy(): void
   {
+    this.level.players[this.player].income -= this.template.income_alive;
     this.level.remove_unit(this);
     super.destroy();
   }

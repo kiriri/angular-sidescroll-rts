@@ -1,5 +1,6 @@
 <div class="ui">
-  <span class="money">{{game.active_level.players[0].money | number}}</span>
+  <span class="money">{{math.floor(game.active_level.players[0].money)}}</span>
+  <span class="income">+{{game.active_level.players[0].income | number}}</span>
   <app-spawnmenu [game]="game">
   </app-spawnmenu>
 </div>

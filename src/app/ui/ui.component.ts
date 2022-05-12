@@ -11,6 +11,8 @@ export class UiComponent implements OnInit {
   @Input()
   game:Game;
 
+  math=Math;
+
   constructor() { }
 
   ngOnInit(): void {
