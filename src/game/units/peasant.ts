@@ -1,7 +1,7 @@
 import { ResourceLoader } from "../ResourceLoader";
 import { UNITS, UnitTemplate } from "../Unit";
 
-ResourceLoader.add_texture("assets/images/pesant_attacc.svg");
+ResourceLoader.add_texture("assets/images/pesant_attacc.png");
 ResourceLoader.add_texture("assets/images/pesant_walk.png");
 
 export const Peasant: UnitTemplate = {
@@ -16,7 +16,7 @@ export const Peasant: UnitTemplate = {
   range: 32,
   health: 3,
   damage: 1,
-  damage_trigger_delay: 300,
+  damage_trigger_delay: 900,
   splash: 0,
   upgrades: [
     [

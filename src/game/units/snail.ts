@@ -1,7 +1,7 @@
 import { ResourceLoader } from "../ResourceLoader";
 import { UNITS, UnitTemplate } from "../Unit";
 
-ResourceLoader.add_texture("assets/images/snail_attacc.svg");
+ResourceLoader.add_texture("assets/images/snail_attacc.png");
 ResourceLoader.add_texture("assets/images/snail_walk.png");
 
 export const Snail: UnitTemplate = {
