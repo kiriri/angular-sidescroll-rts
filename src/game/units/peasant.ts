@@ -1,8 +1,8 @@
 import { ResourceLoader } from "../ResourceLoader";
 import { UNITS, UnitTemplate } from "../Unit";
 
-ResourceLoader.add_texture("assets/images/Chess_plt45.svg");
-ResourceLoader.add_texture("assets/images/pesant_walkcycle.png");
+ResourceLoader.add_texture("assets/images/pesant_attacc.svg");
+ResourceLoader.add_texture("assets/images/pesant_walk.png");
 
 export const Peasant: UnitTemplate = {
   label:"Peasant",
@@ -47,10 +47,10 @@ export const Peasant: UnitTemplate = {
     ]
 
   ],
-  size:[64,64],
+  size:[128,128],
   animations: {
-    idle: { url: "assets/images/pesant_walkcycle.png", duration: 1000 },
-    walk: { url: "assets/images/pesant_walkcycle.png", duration: 1000 },
-    attack: { url: "assets/images/Chess_plt45.svg", duration: 1000 }
+    idle: { url: "assets/images/pesant_walk.png", duration: 1000 },
+    walk: { url: "assets/images/pesant_walk.png", duration: 1000 },
+    attack: { url: "assets/images/pesant_attacc.png", duration: 1000 }
   }
 }
