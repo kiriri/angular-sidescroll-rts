@@ -171,6 +171,33 @@ export class UnitInstance extends Spriteful implements Damageable
 
   }
 
+  do_attack()
+  {
+    let enemy = this.target = this.find_enemy();
+
+    let damage = this.get_damage();
+
+    if(this.template.splash <= 0)
+    {
+      enemy?.take_damage(damage);
+    }
+    else
+    {
+      let pos = this.target._position;
+
+      let enemies = this.level.units[this.player === 0 ? 1 : 0];
+      enemies.forEach(v=>{
+
+        let dist = Math.abs(v._position[0] - pos[0]);
+        if(dist < (this.template.splash / 2) )
+          v.take_damage(damage);
+      })
+    }
+
+    this.has_attacked = true;
+
+  }
+
   has_attacked = false; // resets when a new animation starts, set to true after attack_delay
   update(delta: number)
   {
@@ -183,9 +210,7 @@ export class UnitInstance extends Spriteful implements Damageable
     {
       if (!this.has_attacked && (cooldown > this.template.damage_trigger_delay))
       {
-        let enemy = this.target = this.find_enemy();
-        this.has_attacked = true;
-        enemy?.take_damage(this.get_damage());
+        this.do_attack();
       }
       return;
     }

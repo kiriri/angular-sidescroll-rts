@@ -17,7 +17,7 @@ export const Snail: UnitTemplate = {
   health: 10,
   damage: 5,
   damage_trigger_delay: 900,
-  splash: 0,
+  splash: 500,
   upgrades: [
     [
       {

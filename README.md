@@ -20,5 +20,5 @@ Code by Sven Hollesen. Art by Lars Hollesen.
 ## TODO Lars :
 - Peasant werfer
 - Holy Cross Bowman
-- 4-6 more units
+- 3-5 more units
 - Upgrade paths
