@@ -18,7 +18,7 @@ Code by Sven Hollesen. Art by Lars Hollesen.
 - P2P Multiplayer
 
 ## TODO Lars :
-- Peasant attack animation
+- Peasant attacks animation
 - Holy Cross Bowman
 - 4-6 more units
 - Upgrade paths
