@@ -10,14 +10,15 @@ Code by Sven Hollesen. Art by Lars Hollesen.
 - Run "convert *.png +append sprites.png"
 
 ## TODO Sven :
+- Handle bad image urls gracefully. Particularly in preload
 - Enemy Player AI
-- Unit upgrades UI
+- Unit XP
 - Ranged unit / projectiles
 - Deck Management UI
 - P2P Multiplayer
 
 ## TODO Lars :
-- Snail implementation
 - Peasant attack animation
-- 5-7 more units
+- Holy Cross Bowman
+- 4-6 more units
 - Upgrade paths
