@@ -68,6 +68,18 @@ export class Player
     if(!(template.label in this.upgrades))
       this.upgrades[template.label] = [];
     this.upgrades[template.label].push(upgrade);
+
+    let additions = upgrade.add ?? {};
+    for(let k in additions)
+    {
+      template[k] += additions[k];
+    }
+
+    let mults = upgrade.multiply ?? {};
+    for(let k in mults)
+    {
+      template[k] *= mults[k];
+    }
   }
 
   get_unit_progress(template:UnitTemplate) : number

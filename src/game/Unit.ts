@@ -38,12 +38,14 @@ export interface UnitTemplate extends UnitDescriptor
   on_death?: (this: UnitInstance) => void,
 }
 
+export type UpgradableFields<T> = {[K in keyof T as T[K] extends number ? K : never] : T[K]}
+
 export interface UnitUpgrade
 {
   label: string;
   description: string;
-  add?: Partial<UnitDescriptor>;
-  multiply?: Partial<UnitDescriptor>;
+  add?: Partial<UpgradableFields<UnitDescriptor>>;
+  multiply?: Partial<UpgradableFields<UnitDescriptor>>;
 }
 
 import * as PIXI from "pixi.js";
