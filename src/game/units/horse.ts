@@ -23,6 +23,7 @@ export const Horse: UnitTemplate = {
       {
         label: "Attack",
         description: "Focus on damage. +1 Attack",
+        xp:10,
         add: { damage: 1 }
       },
     ],
@@ -30,12 +31,14 @@ export const Horse: UnitTemplate = {
       {
         label: "Attack",
         description: "Focus on damage. +1 Attack",
+        xp:25,
         add: { damage: 1 }
       },
     ],
     [
       {
         label: "Attack",
+        xp:50,
         description: "Focus on damage. +1 Attack",
         add: { damage: 1 }
       },

@@ -23,6 +23,7 @@ export const Snail: UnitTemplate = {
       {
         label: "Attack",
         description: "Focus on damage. +1 Attack",
+        xp:10,
         add: { damage: 1 }
       },
     ],
@@ -30,6 +31,7 @@ export const Snail: UnitTemplate = {
       {
         label: "Attack",
         description: "Focus on damage. +1 Attack",
+        xp:25,
         add: { damage: 1 }
       },
     ],
@@ -37,6 +39,7 @@ export const Snail: UnitTemplate = {
       {
         label: "Attack",
         description: "Focus on damage. +1 Attack",
+        xp:50,
         add: { damage: 1 }
       },
     ]

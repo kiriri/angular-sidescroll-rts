@@ -19,7 +19,6 @@ export interface LevelTemplate
 export class Level
 {
   players: [Player, Player] = [new Player(0,this), new Player(1,this)];
-  units: Set<UnitInstance>[] = [new Set(), new Set()];
   bases : [Base,Base];
   game: Game;
 
@@ -93,14 +92,14 @@ export class Level
   add_unit(unit:UnitInstance)
   {
     let {player} = unit;
-    let unit_list = this.units[player];
+    let unit_list = this.players[player].units;
     unit_list.add(unit);
   }
 
   remove_unit(unit:UnitInstance)
   {
     let {player} = unit;
-    let unit_list = this.units[player];
+    let unit_list = this.players[player].units;
     unit_list.delete(unit);
   }
 
@@ -123,7 +122,7 @@ export class Level
     // Do attacks and other actions
     for(let i = 0; i < 2; i++)
     {
-      this.units[i].forEach(v =>
+      this.players[i].units.forEach(v =>
         {
           v.update(delta);
         }
@@ -133,7 +132,7 @@ export class Level
     // Do movement actions
     for(let i = 0; i < 2; i++)
     {
-      this.units[i].forEach(v =>
+      this.players[i].units.forEach(v =>
         {
           v.update_position(delta);
         }
@@ -143,7 +142,7 @@ export class Level
     // Destroy dead units
     for(let i = 0; i < 2; i++)
     {
-      let units = this.units[i];
+      let units = this.players[i].units;
       units.forEach(v=>{
         if(v.dead)
           v.destroy();

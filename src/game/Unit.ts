@@ -44,6 +44,7 @@ export interface UnitUpgrade
 {
   label: string;
   description: string;
+  xp:number;
   add?: Partial<UpgradableFields<UnitDescriptor>>;
   multiply?: Partial<UpgradableFields<UnitDescriptor>>;
 }
@@ -189,7 +190,7 @@ export class UnitInstance extends Spriteful implements Damageable
     {
       let pos = this.target._position;
 
-      let enemies = this.level.units[this.player === 0 ? 1 : 0];
+      let enemies = this.level.players[this.player === 0 ? 1 : 0].units;
       enemies.forEach(v=>{
 
         let dist = Math.abs(v._position[0] - pos[0]);
@@ -233,7 +234,7 @@ export class UnitInstance extends Spriteful implements Damageable
    */
   find_enemy(): UnitInstance | undefined
   {
-    let enemies = this.level.units[this.player === 0 ? 1 : 0];
+    let enemies = this.level.players[this.player === 0 ? 1 : 0].units;
     let closest_target: UnitInstance;
     let closest_distance = Infinity;
     enemies.forEach(v =>

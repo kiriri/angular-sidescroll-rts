@@ -1,1 +1,4 @@
-<div (click)="click($event)">{{upgrade.label}}</div>
+<div (click)="click($event)" [ngClass]="{'unit-upgrade':true,inactive:get_progress()<1}">
+  <div class="unit-upgrade-progress" [style.transform]="get_scale()"></div>
+  <span>{{upgrade.label}}</span>
+</div>

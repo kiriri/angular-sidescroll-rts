@@ -11,7 +11,9 @@ export class Player
   money : number = 100; // currently held money
   income : number = 0; // money per second
   deck:UnitTemplate[] = Object.values(units).map(v=>{return {...v}}); // all units this player can spawn
+  units : Set<UnitInstance> = new Set(); // spawned units of this player
   last_spawn_time : Record<string,number> = {}; // unit-name -> last timestamp a unit was spawned
+  xp : Record<string,number> = {}; // unit-name -> xp
   upgrades : Record<string,UnitUpgrade[]> = {}; // unit-name -> upgrade selection
   index: 0|1; // Index in level players array
   level: Level;
@@ -32,6 +34,8 @@ export class Player
     new UnitInstance(this.index,this.level,template,[this.level.bases[this.index]._position[0], this.level.bases[this.index]._position[1] - Math.random() * 25]);
     this.last_spawn_time[template.label] = this.level.time;
     this.money -= template.cost;
+
+    this.xp[template.label] = (this.xp[template.label] ?? 0) + 1;
   }
 
   /**
@@ -69,6 +73,8 @@ export class Player
       this.upgrades[template.label] = [];
     this.upgrades[template.label].push(upgrade);
 
+    this.xp[template.label] -= upgrade.xp;
+
     let additions = upgrade.add ?? {};
     for(let k in additions)
     {
@@ -86,6 +92,11 @@ export class Player
   {
     let difficulty = this.is_player() ? 1 : this.level.template.difficulty;
     return Math.min(1, difficulty * (this.level.time - this.get_last_spawn_time(template)) / template.spawn_cooldown);
+  }
+
+  get_unit_xp(template:UnitTemplate) : number
+  {
+    return this.xp[template.label] ?? 0;
   }
 
   can_spawn(template:UnitTemplate):boolean

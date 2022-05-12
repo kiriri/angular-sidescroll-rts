@@ -21,9 +21,12 @@ export class SpawnmenuItemComponent {
 
   click()
   {
-    requestAnimationFrame(()=>{
-      this.game.active_level.players[0].spawn_unit(this.template);
-    })
+    if(this.game.active_level.players[0].can_spawn(this.template))
+    {
+      requestAnimationFrame(()=>{
+        this.game.active_level.players[0].spawn_unit(this.template);
+      })
+    }
   }
 
   time:number = 0;

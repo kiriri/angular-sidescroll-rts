@@ -1,4 +1,27 @@
-div:hover
+.unit-upgrade
 {
-  color:red;
+  position: relative;
+  margin-block: 2px;
+  padding: 2px;
+
+  .unit-upgrade-progress
+  {
+    position: absolute;
+    left:0;
+    top:0;
+    height: 100%;
+    width: 100%;
+    background-color:blue;
+    z-index: -1;
+  }
+
+  &.inactive
+  {
+    filter: saturate(50%);
+  }
+
+  &:not(.inactive):hover
+  {
+    color:red;
+  }
 }

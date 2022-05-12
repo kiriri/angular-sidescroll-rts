@@ -23,9 +23,23 @@ export class UpgradeComponent implements OnInit {
 
   click(e:MouseEvent)
   {
-    this.game.active_level.players[0].upgrade_unit(this.template,this.upgrade);
+    if(this.get_progress() >= 1)
+      this.game.active_level.players[0].upgrade_unit(this.template,this.upgrade);
     e.preventDefault();
     e.stopPropagation();
+  }
+
+  /**
+   * Return [0,1] progress towards meeting the (xp) requirements
+   */
+  get_progress():number
+  {
+    return this.game.active_level.players[0].get_unit_xp(this.template) / this.upgrade.xp;
+  }
+
+  get_scale()
+  {
+    return `translateX(-${50 - this.get_progress() * 50}%) scaleX(${this.get_progress()})`;
   }
 
 }
