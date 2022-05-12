@@ -10,6 +10,7 @@ import { Building } from "./Building";
 export interface LevelTemplate
 {
   width: number;
+  difficulty:number; // normalized value, 1 plays as good as possible
 }
 
 /**
@@ -30,6 +31,8 @@ export class Level
   winner : number = -1;
 
   time : number = Date.now();
+
+  difficulty
 
   constructor(game: Game, template: LevelTemplate)
   {
@@ -52,7 +55,7 @@ export class Level
     this.bases = [base_0,base_1];
 
     // let peasant = new UnitInstance(0,this,Peasant,[base_0.sprite.position.x,height]);
-    let peasant2 = new UnitInstance(1,this,Peasant,[base_1.sprite.position.x,height]);
+    // let peasant2 = new UnitInstance(1,this,Peasant,[base_1.sprite.position.x,height]);
   }
 
   initialize_viewport()
@@ -112,9 +115,10 @@ export class Level
 
     this.time += delta * 1000;
 
-    // console.log(delta)
-    this.players[0].money += delta * this.players[0].income;
-    this.players[1].money += delta * this.players[1].income;
+    for(let i = 0; i < 2; i++)
+    {
+      this.players[i].update(delta);
+    }
 
     // Do attacks and other actions
     for(let i = 0; i < 2; i++)

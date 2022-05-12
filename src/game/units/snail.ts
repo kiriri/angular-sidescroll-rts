@@ -16,8 +16,7 @@ export const Snail: UnitTemplate = {
   range: 100,
   health: 10,
   damage: 5,
-  attack_cooldown: 500,
-  damage_trigger_delay: 2000,
+  damage_trigger_delay: 200,
   splash: 0,
   upgrades: [
     [
@@ -47,6 +46,6 @@ export const Snail: UnitTemplate = {
   animations: {
     idle: { url: "assets/images/snail_walk.png", duration: 1000 },
     walk: { url: "assets/images/snail_walk.png", duration: 1000 },
-    attack: { url: "assets/images/snail_attacc.png", duration: 2000 }
+    attack: { url: "assets/images/snail_attacc.png", duration: 500 }
   }
 }

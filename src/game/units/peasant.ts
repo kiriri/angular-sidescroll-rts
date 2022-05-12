@@ -16,7 +16,6 @@ export const Peasant: UnitTemplate = {
   range: 32,
   health: 3,
   damage: 1,
-  attack_cooldown: 1000,
   damage_trigger_delay: 300,
   splash: 0,
   upgrades: [

@@ -13,7 +13,6 @@ export const BaseTemplate:UnitTemplate = {
   damage:0,
   income_alive:5,
   income:0,
-  attack_cooldown:Infinity,
   damage_trigger_delay:0,
   label:"Base",
   description:"Base",

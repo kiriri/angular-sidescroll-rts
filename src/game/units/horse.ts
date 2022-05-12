@@ -16,7 +16,6 @@ export const Horse: UnitTemplate = {
   range: 40,
   health: 10,
   damage: 2,
-  attack_cooldown: 1000,
   damage_trigger_delay: 500,
   splash: 0,
   upgrades: [
@@ -43,7 +42,7 @@ export const Horse: UnitTemplate = {
     ]
 
   ],
-  size:[128,128],
+  size:[64,64],
   animations: {
     idle: { url: "assets/images/Horse_walk.png", duration: 1000 },
     walk: { url: "assets/images/Horse_walk.png", duration: 1000 },

@@ -21,7 +21,6 @@ export interface UnitDescriptor
   speed: number;
   health: number;
   damage: number;
-  attack_cooldown: number; // in ms
   damage_trigger_delay: number; // how many ms to wait after attack animation has started, before damage is applied?
   splash: number; // if 0, don't splash at all
   size: Vector2; // in pixels
@@ -178,7 +177,7 @@ export class UnitInstance extends Spriteful implements Damageable
     this.update_animation();
 
     let cooldown = Date.now() - this.last_attack;
-    if (cooldown < this.template.attack_cooldown)
+    if (cooldown < (this.current_animation?.duration??0) )
     {
       if (!this.has_attacked && (cooldown > this.template.damage_trigger_delay))
       {
@@ -192,8 +191,8 @@ export class UnitInstance extends Spriteful implements Damageable
     let enemy = this.target = this.find_enemy();
     if (enemy !== undefined)
     {
-      this.last_attack = Date.now();
       this.set_animation("attack");
+      this.last_attack = Date.now();
       this.has_attacked = false;
     }
 

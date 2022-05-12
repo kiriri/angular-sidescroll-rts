@@ -23,7 +23,7 @@ export class Game
   new_level()
   {
     let old_level = this.active_level;
-    this.active_level = new Level(this,{width:2000});
+    this.active_level = new Level(this,{width:2000,difficulty:0.3});
     if(old_level)
     {
       old_level.destroy();
