@@ -1,8 +1,8 @@
 import { ResourceLoader } from "../ResourceLoader";
 import { UNITS, UnitTemplate } from "../Unit";
 
-ResourceLoader.add_texture("assets/images/Chess_plt45.svg");
-ResourceLoader.add_texture("assets/images/pesant_walkcycle.png");
+ResourceLoader.add_texture("assets/images/Horse_Attacc.svg");
+ResourceLoader.add_texture("assets/images/Horse_walk.png");
 
 export const Horse: UnitTemplate = {
   label:"Horse",
