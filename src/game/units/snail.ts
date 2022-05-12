@@ -4,10 +4,10 @@ import { UNITS, UnitTemplate } from "../Unit";
 ResourceLoader.add_texture("assets/images/Chess_plt45.svg");
 ResourceLoader.add_texture("assets/images/pesant_walkcycle.png");
 
-export const Horse: UnitTemplate = {
+export const Snail: UnitTemplate = {
   label:"Snail",
-  description:"Consumed a hoverboard as a child",
-  cost: 500,
+  description:"Had a trauma after visiting france and consumed a hoverboard as a child",
+  cost: 50,
   income: 5,
   income_alive: 25,
   loot: 100,
@@ -17,7 +17,7 @@ export const Horse: UnitTemplate = {
   health: 10,
   damage: 5,
   attack_cooldown: 500,
-  damage_trigger_delay: 500,
+  damage_trigger_delay: 2000,
   splash: 0,
   upgrades: [
     [
@@ -43,7 +43,7 @@ export const Horse: UnitTemplate = {
     ]
 
   ],
-  size:[64,64],
+  size:[256,128],
   animations: {
     idle: { url: "assets/images/snail_walk.png", duration: 1000 },
     walk: { url: "assets/images/snail_walk.png", duration: 1000 },

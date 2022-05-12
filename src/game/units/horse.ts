@@ -6,7 +6,7 @@ ResourceLoader.add_texture("assets/images/pesant_walkcycle.png");
 
 export const Horse: UnitTemplate = {
   label:"Horse",
-  description:"Horse",
+  description:"",
   cost: 100,
   income: 1,
   income_alive: 5,
@@ -43,7 +43,7 @@ export const Horse: UnitTemplate = {
     ]
 
   ],
-  size:[64,64],
+  size:[128,128],
   animations: {
     idle: { url: "assets/images/Horse_walk.png", duration: 1000 },
     walk: { url: "assets/images/Horse_walk.png", duration: 1000 },
