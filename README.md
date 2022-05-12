@@ -9,8 +9,15 @@ Code by Sven Hollesen. Art by Lars Hollesen.
 - Render images as png into an empty folder 
 - Run "convert *.png +append sprites.png"
 
-
-## TODO :
-- Win/Lose modal
+## TODO Sven :
 - Enemy Player AI
+- Unit upgrades UI
+- Ranged unit / projectiles
+- Deck Management UI
 - P2P Multiplayer
+
+## TODO Lars :
+- Snail implementation
+- Peasant attack animation
+- 5-7 more units
+- Upgrade paths

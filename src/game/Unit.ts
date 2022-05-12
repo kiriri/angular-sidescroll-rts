@@ -34,8 +34,8 @@ export interface UnitTemplate extends UnitDescriptor
     UnitUpgrade[],
     UnitUpgrade[]
   ],
-  on_spawn?:(this:UnitInstance)=>void,
-  on_death?:(this:UnitInstance)=>void,
+  on_spawn?: (this: UnitInstance) => void,
+  on_death?: (this: UnitInstance) => void,
 }
 
 export interface UnitUpgrade
@@ -54,7 +54,7 @@ import { ResourceLoader } from "./ResourceLoader";
 import { Spriteful } from "./Spriteful";
 import { Vector2 } from "./TypeDefinitions";
 
-export const UNITS : Record<string,UnitTemplate> = {};
+export const UNITS: Record<string, UnitTemplate> = {};
 
 export class UnitInstance extends Spriteful implements Damageable
 {
@@ -80,15 +80,15 @@ export class UnitInstance extends Spriteful implements Damageable
    * Units can remain dead until the end of the frame to make sure their attack goes off.
    * (Think mirror matchup, both should die, instead of only the one who's update loop is processed last)
    */
-  dead:boolean;
+  dead: boolean;
 
-  animation_frame:number = 0;
+  animation_frame: number = 0;
 
 
 
-  constructor(player: number, level: Level, template: UnitTemplate, position: Vector2)
+  constructor(player: number, level: Level, template: UnitTemplate, position: Vector2, scale: Vector2 = [player ? -1 : 1, 1])
   {
-    super(level, position, {url:template.animations.idle.url,size:template.size});
+    super(level, position, { url: template.animations.idle.url, size: template.size }, scale);
     this.player = player;
     this.template = template;
     this.health = template.health;
@@ -112,7 +112,7 @@ export class UnitInstance extends Spriteful implements Damageable
   {
     this.health -= v;
     console.log(this.health);
-    if(this.health <= 0) // TODO : Make it so the dead target can still get a hit off
+    if (this.health <= 0) // TODO : Make it so the dead target can still get a hit off
     {
       this.die();
     }
@@ -123,24 +123,24 @@ export class UnitInstance extends Spriteful implements Damageable
     return this.template.damage;
   }
 
-  override current_animation ?: {name:keyof UnitTemplate["animations"], frame:number, frame_size:Vector2, length:number, duration:number, start_time:number};
-  set_animation(name:keyof UnitTemplate["animations"])
+  override current_animation?: { name: keyof UnitTemplate["animations"], frame: number, frame_size: Vector2, length: number, duration: number, start_time: number };
+  set_animation(name: keyof UnitTemplate["animations"])
   {
     let anim = this.template.animations[name];
 
-    ResourceLoader.load_texture(anim.url).then(texture=>
+    ResourceLoader.load_texture(anim.url).then(texture =>
     {
       this.set_texture(texture);
       let frame_count = texture.baseTexture.width / this.template.size[0]; // how many frames?
 
-      this.current_animation = {name,frame:0,length:frame_count,duration:anim.duration,start_time:Date.now(), frame_size:this.template.size};
+      this.current_animation = { name, frame: 0, length: frame_count, duration: anim.duration, start_time: Date.now(), frame_size: this.template.size };
       // console.log(frame_count)
     });
   }
 
   update_animation()
   {
-    if(this.current_animation)
+    if (this.current_animation)
     {
       let frame = Math.floor((Date.now() - this.current_animation.start_time) * this.current_animation.length / this.current_animation.duration)
       this.current_animation.frame = frame;
@@ -150,6 +150,25 @@ export class UnitInstance extends Spriteful implements Damageable
 
 
 
+  target: UnitInstance;
+  /**
+   * Update the position AFTER anything else, so unit attacks happen on equal footing.
+   * Without this extra step, a unit may not be able to reach another identical unit,
+   * move closer, only to then be attacked by said enemy unit in the same frame,
+   * because it now is in range without having to move.
+   * @param delta
+   */
+  update_position(delta: number)
+  {
+    if (this.target === undefined)
+    {
+      if (this.current_animation?.name != "walk")
+        this.set_animation("walk");
+      this.set_position(this._position[0] + (this.player ? -1 : 1) * this.template.speed * delta);
+    }
+
+  }
+
   has_attacked = false; // resets when a new animation starts, set to true after attack_delay
   update(delta: number)
   {
@@ -158,29 +177,23 @@ export class UnitInstance extends Spriteful implements Damageable
     this.update_animation();
 
     let cooldown = Date.now() - this.last_attack;
-    if(cooldown < this.template.attack_cooldown)
+    if (cooldown < this.template.attack_cooldown)
     {
-      if(!this.has_attacked && (cooldown > this.template.damage_trigger_delay) )
+      if (!this.has_attacked && (cooldown > this.template.damage_trigger_delay))
       {
-        let enemy = this.find_enemy();
+        let enemy = this.target = this.find_enemy();
         this.has_attacked = true;
         enemy?.take_damage(this.get_damage());
       }
       return;
     }
 
-    let enemy = this.find_enemy();
-    if(enemy !== undefined)
+    let enemy = this.target = this.find_enemy();
+    if (enemy !== undefined)
     {
-        this.last_attack = Date.now();
-        this.set_animation("attack");
-        this.has_attacked = false;
-    }
-    else
-    {
-      if(this.current_animation?.name != "walk")
-        this.set_animation("walk");
-      this.set_position(this._position[0] + (this.player ? -1 : 1) * this.template.speed * delta);
+      this.last_attack = Date.now();
+      this.set_animation("attack");
+      this.has_attacked = false;
     }
 
   }
@@ -188,20 +201,21 @@ export class UnitInstance extends Spriteful implements Damageable
   /**
    * Return a unit if one is in range, or undefined otherwise
    */
-  find_enemy(): UnitInstance | Building | undefined
+  find_enemy(): UnitInstance | undefined
   {
     let enemies = this.level.units[this.player === 0 ? 1 : 0];
-    let closest_target:UnitInstance;
+    let closest_target: UnitInstance;
     let closest_distance = Infinity;
-    enemies.forEach(v=>{
+    enemies.forEach(v =>
+    {
       let dist = Math.abs(v._position[0] - this._position[0]);
-      if(dist < closest_distance)
+      if (dist < closest_distance)
       {
         closest_target = v;
         closest_distance = dist;
       }
     })
-    if(closest_distance < this.template.range)
+    if (closest_distance < this.template.range)
     {
       return closest_target;
     }

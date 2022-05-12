@@ -22,8 +22,13 @@ export const Peasant: UnitTemplate = {
     [
       {
         label: "Attack",
-        description: "Focus on damage. +1 Attack",
+        description: "Offense is the best defense.",
         add: { damage: 1 }
+      },
+      {
+        label: "Spam",
+        description: "Quantity is its own quality.",
+        add: { spawn_cooldown: -500 }
       },
     ],
     [

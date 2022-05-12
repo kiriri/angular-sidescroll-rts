@@ -10,7 +10,8 @@ loader.onLoad.add((a,b) =>
   if(b.texture)
   {
     TEXTURES[b.name] = b.texture;
-    QUEUED_RESOURCES[b.name]?.forEach(v=>v(b.texture));
+    QUEUED_RESOURCES[b.name]?.forEach(v=>v?.(b.texture));
+    delete QUEUED_RESOURCES[b.name];
   }
   RESOURCES[b.name] = b;
 
@@ -18,10 +19,9 @@ loader.onLoad.add((a,b) =>
 }); // called once per loaded file
 loader.onComplete.add(() => {}); // called once when the queued resources all load.
 
-let SCHEDULED_RESOURCES = {};
-let QUEUED_RESOURCES : Record<string,((v:PIXI.Texture)=>void)[]> = {}; // If loader is running, queue up next ones
+let QUEUED_RESOURCES : Record<string,((v:PIXI.Texture)=>void)[]> = {}; // All resources the
 let RESOURCES = {};
-let TEXTURES : Record<string,PIXI.Texture> = {};
+let TEXTURES : Record<string,PIXI.Texture> = {}; // Loaded textures
 
 export class ResourceLoader
 {
@@ -64,16 +64,11 @@ export class ResourceLoader
    */
   static async try_load(url:string,resolve:(v:PIXI.Texture)=>void)
   {
-    if(!(url in QUEUED_RESOURCES))
-      QUEUED_RESOURCES[url] = [];
-    QUEUED_RESOURCES[url].push(resolve);
-
+    this.add_texture(url,resolve);
     if(!loader.loading)
     {
-      this.add_texture(url);
       this.do_load();
     }
-
   }
 
   static depth = 0;
@@ -85,28 +80,34 @@ export class ResourceLoader
       throw new Error("Too many loads in a row"); // TODO : Remove once the Bug is resolved
     }
     return new Promise<void>((resolve)=>{
-    loader.load(()=>
-    {
-      resolve();
-      // If new urls were queried while the loader was busy, process them immediately
-      let next_urls = Object.keys(QUEUED_RESOURCES);
-      if(next_urls.length > 0)
+
+      // Add everything to the actual loader
+      for(let k in QUEUED_RESOURCES)
       {
-        for(let i = 0; i < next_urls.length; i++)
-        {
-          this.add_texture(next_urls[i]);
-        }
-        this.do_load();
+        loader.add(k);
       }
-    });
+
+      // Do actual load
+      loader.load(()=>
+      {
+        // Resolve, because all files that were queued back when this function started are now loaded.
+        resolve();
+        // If new urls were queried while the loader was busy, process them immediately
+        let next_urls = Object.keys(QUEUED_RESOURCES);
+        if(next_urls.length > 0)
+        {
+          this.do_load();
+        }
+      });
   });
   }
 
-  static add_texture(url:string)
+  static add_texture(url:string,callback?:(v:PIXI.Texture)=>any)
   {
-    if(SCHEDULED_RESOURCES[url])
-      return;
-    SCHEDULED_RESOURCES[url] = true;
-    loader.add(url);
+
+    if(!(url in QUEUED_RESOURCES))
+      QUEUED_RESOURCES[url] = [];
+    QUEUED_RESOURCES[url].push(callback);
+
   }
 }

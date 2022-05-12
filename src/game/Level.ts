@@ -105,19 +105,33 @@ export class Level
    */
   update(delta: number)
   {
+    if(this.winner >= 0)
+      return;
     // console.log(delta)
     this.players[0].money += delta * this.players[0].income;
     this.players[1].money += delta * this.players[1].income;
 
-    this.units[0].forEach(v =>
+    // Do attacks and other actions
+    for(let i = 0; i < 2; i++)
     {
-      v.update(delta);
-    });
-    this.units[1].forEach(v =>
-    {
-      v.update(delta);
-    })
+      this.units[i].forEach(v =>
+        {
+          v.update(delta);
+        }
+      );
+    };
 
+    // Do movement actions
+    for(let i = 0; i < 2; i++)
+    {
+      this.units[i].forEach(v =>
+        {
+          v.update_position(delta);
+        }
+      );
+    }
+
+    // Destroy dead units
     for(let i = 0; i < 2; i++)
     {
       let units = this.units[i];

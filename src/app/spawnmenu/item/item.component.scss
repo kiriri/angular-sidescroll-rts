@@ -1,4 +1,6 @@
 @use '../../template.scss' as t;
+@use 'sass:color';
+
 
 @mixin outline($col) {
   text-shadow:
@@ -39,7 +41,7 @@
   border-style: groove;
   border-color: t.$outline1;
 
-  background-color: t.$col1;
+  background-color: color.scale(t.$col1,$blackness:50%);
 
   color:t.$text1;
   font-weight: 800;
@@ -55,7 +57,7 @@
     top:0;
     width:100%;
     height: 100%;
-    background-color: hotpink;
+    background-color: t.$col1;
   }
 
   .unit-name
@@ -70,6 +72,46 @@
   .unit-cost
   {
     position: absolute;
+  }
+
+  &:not(:hover) .unit-upgrades-container
+  {
+    display: none;
+  }
+
+  .unit-upgrades-container
+  {
+    position:absolute;
+    width: 0;
+    left:50%;
+    top:0;
+    pointer-events: auto;
+
+
+    .unit-upgrades
+    {
+      position: absolute;
+      left:0;
+      transform: translateX(-50%) translateY(calc(-100% - 16px));
+      background-color: white;
+      padding:8px;
+      border-radius: 8px;
+      border: 1px solid black;
+      margin-bottom: 16px;
+      pointer-events: all;
+
+      &::after // Hover doesn't work over margin, so we create a filler object over the margin area
+      {
+        content: '';
+        position: absolute;
+        left:0;
+        bottom:-16px;
+        height: 16px;
+        width: 100%;
+        pointer-events: all;
+      }
+
+    }
   }
 
 

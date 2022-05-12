@@ -10,6 +10,7 @@ import { UiComponent } from './ui/ui.component';
 import { SpawnmenuComponent } from './spawnmenu/spawnmenu.component';
 import { SpawnmenuItemComponent } from './spawnmenu/item/item.component';
 import { ModalComponent } from './modal/modal.component';
+import { UpgradeComponent } from './spawnmenu/item/upgrade/upgrade.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ModalComponent } from './modal/modal.component';
     UiComponent,
     SpawnmenuComponent,
     SpawnmenuItemComponent,
-    ModalComponent
+    ModalComponent,
+    UpgradeComponent
   ],
   imports: [
     BrowserModule,

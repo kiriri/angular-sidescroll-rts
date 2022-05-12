@@ -3,4 +3,11 @@
   <div class="unit-progress" [style.transform]="get_progress()"></div>
   <span class="unit-cost">{{template.cost}}</span>
   <span class="unit-name">{{template.label}}</span>
+  <div  class="unit-upgrades-container">
+    <div  class="unit-upgrades">
+      <app-spawnmenu-item-upgrade *ngFor="let k of template.upgrades[game.active_level.players[0].get_upgrades(template).length]" [template]="template" [upgrade]="k" [game]="game">
+
+      </app-spawnmenu-item-upgrade>
+    </div>
+  </div>
 </div>

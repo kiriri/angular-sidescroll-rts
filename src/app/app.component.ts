@@ -1,5 +1,6 @@
 import { Component, Injectable, Input } from '@angular/core';
 import { Game } from 'src/game/Game';
+import { Level } from 'src/game/Level';
 
 
 
@@ -11,5 +12,10 @@ import { Game } from 'src/game/Game';
 export class AppComponent {
   title = 'angular-sidescroll-rts';
   game : Game = window["game"];
+
+  reset_level()
+  {
+    this.game.new_level();
+  }
 
 }

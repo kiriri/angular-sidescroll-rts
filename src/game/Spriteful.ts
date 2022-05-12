@@ -14,10 +14,12 @@ export class Spriteful
   sprite:PIXI.Sprite;
   _position:Vector2;
   size:Vector2 = [1,1]; // If animated, used to determine the frames
+  scale:Vector2 = [1,1]; // Directly squishes/stretches the sprite.
 
-  constructor(level:Level, position:Vector2, sprite:{url:string,size?:Vector2})
+  constructor(level:Level, position:Vector2, sprite:{url:string,size?:Vector2}, scale:Vector2 = [1,1])
   {
     this.level = level;
+    this.scale = scale;
     this._position = position;
     this.size = sprite.size;
     this._create_sprite(sprite.url,sprite.size);
@@ -61,6 +63,8 @@ export class Spriteful
     const position = this._position;
 
     const sprite = this.sprite = new PIXI.Sprite;
+    this.sprite.scale.x = this.scale[0];
+    this.sprite.scale.y = this.scale[1];
     // let spritesheet = new PIXI.Spritesheet(PIXI.Texture.from(url),{frames:[{frame:}]})
     ResourceLoader.load_texture(url).then((texture)=>{
 

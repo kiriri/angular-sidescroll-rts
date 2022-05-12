@@ -16,8 +16,18 @@ export class Game
   constructor()
   {
     // this.set_pixi(app);
-    this.active_level = new Level(this,{width:2000});
+    this.new_level();
 
+  }
+
+  new_level()
+  {
+    let old_level = this.active_level;
+    this.active_level = new Level(this,{width:2000});
+    if(old_level)
+    {
+      old_level.destroy();
+    }
   }
 
   set_pixi(app : PIXI.Application)
