@@ -23,6 +23,7 @@ export interface UnitDescriptor
   damage: number;
   damage_trigger_delay: number; // how many ms to wait after attack animation has started, before damage is applied?
   splash: number; // if 0, don't splash at all
+  pierce:number[]; // deal pierce[n] * 100% damage to the (n+1) closest enemy on hit (if in range), where n is the index in the pierce array
   size: Vector2; // in pixels
   animations: { idle: UnitAnimation, walk: UnitAnimation, attack: UnitAnimation }; // path to animation sprite sheets
 }
