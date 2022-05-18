@@ -23,7 +23,7 @@ export interface UnitDescriptor
   damage: number;
   damage_trigger_delay: number; // how many ms to wait after attack animation has started, before damage is applied?
   splash: number; // if 0, don't splash at all
-  pierce:number[]; // deal pierce[n] * 100% damage to the (n+1) closest enemy on hit (if in range), where n is the index in the pierce array
+  pierce?:number[]; // deal pierce[n] * 100% damage to the (n+1) closest enemy on hit (if in range), where n is the index in the pierce array
   size: Vector2; // in pixels
   animations: { idle: UnitAnimation, walk: UnitAnimation, attack: UnitAnimation }; // path to animation sprite sheets
 }
@@ -85,6 +85,7 @@ export class UnitInstance extends Spriteful implements Damageable
    * (Think mirror matchup, both should die, instead of only the one who's update loop is processed last)
    */
   dead: boolean;
+  destroyed: boolean = false;
 
   animation_frame: number = 0;
 
@@ -177,27 +178,41 @@ export class UnitInstance extends Spriteful implements Damageable
 
   do_attack()
   {
-    let enemy = this.target = this.find_enemy();
-    if(enemy === undefined)
+    let enemy_i = this.find_enemy();
+    let enemies = this.level.players[this.player === 0 ? 1 : 0].units;
+    this.target = enemies[enemy_i];
+
+    if(enemy_i === undefined || enemy_i === -1)
       return;
 
     let damage = this.get_damage();
 
-    if(this.template.splash <= 0)
+    for(let i = 0; i <= (this.template.pierce?.length ?? 0); i++)
     {
-      enemy?.take_damage(damage);
-    }
-    else
-    {
-      let pos = this.target._position;
+      console.log(enemy_i);
+      let enemy = enemies[enemy_i + i];
+      let multiplier = i == 0 ? 1 : this.template.pierce[i-1];
 
-      let enemies = this.level.players[this.player === 0 ? 1 : 0].units;
-      enemies.forEach(v=>{
+      let dist = Math.abs(enemy._position[0] - this._position[0]);
 
-        let dist = Math.abs(v._position[0] - pos[0]);
-        if(dist < (this.template.splash / 2) )
-          v.take_damage(damage);
-      })
+      if(dist > this.template.range) // pierce out of range
+        break;
+
+      if(this.template.splash <= 0)
+      {
+        enemy?.take_damage(damage*multiplier);
+      }
+      else
+      {
+        let pos = enemy._position;
+
+        enemies.forEach(v=>{
+
+          let dist = Math.abs(v._position[0] - pos[0]);
+          if(dist < (this.template.splash / 2) )
+            v.take_damage(damage*multiplier);
+        })
+      }
     }
 
     this.has_attacked = true;
@@ -220,8 +235,9 @@ export class UnitInstance extends Spriteful implements Damageable
       return;
     }
 
-    let enemy = this.target = this.find_enemy();
-    if (enemy !== undefined)
+    let enemy_i = this.find_enemy();
+    this.target = this.level.players[this.player === 0 ? 1 : 0].units[enemy_i];
+    if (enemy_i !== undefined || enemy_i === -1)
     {
       this.set_animation("attack");
       this.last_attack = Date.now();
@@ -233,19 +249,19 @@ export class UnitInstance extends Spriteful implements Damageable
   /**
    * Return a unit if one is in range, or undefined otherwise
    */
-  find_enemy(): UnitInstance | undefined
+  find_enemy(): number | undefined
   {
     let enemies = this.level.players[this.player === 0 ? 1 : 0].units;
-    let closest_target: UnitInstance;
+    let closest_target: number = -1;
     let closest_distance = Infinity;
-    enemies.forEach(v =>
+    enemies.forEach((v,i) =>
     {
       if(v.dead)
         return;
       let dist = Math.abs(v._position[0] - this._position[0]);
       if (dist < closest_distance)
       {
-        closest_target = v;
+        closest_target = i;
         closest_distance = dist;
       }
     })
@@ -253,13 +269,13 @@ export class UnitInstance extends Spriteful implements Damageable
     {
       return closest_target;
     }
-    return undefined;
+    return -1;
   }
 
   override destroy(): void
   {
     this.level.players[this.player].income -= this.template.income_alive;
-    this.level.remove_unit(this);
+    this.destroyed = true;
     super.destroy();
   }
 

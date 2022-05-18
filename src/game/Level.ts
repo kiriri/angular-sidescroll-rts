@@ -93,14 +93,12 @@ export class Level
   {
     let {player} = unit;
     let unit_list = this.players[player].units;
-    unit_list.add(unit);
+    unit_list.push(unit);
   }
 
   remove_unit(unit:UnitInstance)
   {
-    let {player} = unit;
-    let unit_list = this.players[player].units;
-    unit_list.delete(unit);
+
   }
 
   /**
@@ -117,6 +115,36 @@ export class Level
     for(let i = 0; i < 2; i++)
     {
       this.players[i].update(delta);
+    }
+
+    // Remove all destroyed units
+    for(let i = 0; i < 2; i++)
+    {
+      let units = this.players[i].units;
+      let destroyed_unit_count = 0;
+      for(let i = 0; i < (units.length - destroyed_unit_count); i++)
+      {
+        let unit = units[i];
+        if(unit.destroyed)
+        {
+          // Swap with last for easy removal
+          units[i] = units[units.length - destroyed_unit_count - 1];
+          units[units.length - destroyed_unit_count - 1] = unit;
+          destroyed_unit_count++;
+          i--;
+        }
+      }
+
+      for(let i = 0; i < destroyed_unit_count; i++)
+      {
+        units.pop();
+      }
+    }
+
+    // Sort by x position
+    for(let i = 0; i < 2; i++)
+    {
+      this.players[i].units.sort((a,b)=>i === 0 ? a._position[0] - b._position[0] : b._position[0] - a._position[0])
     }
 
     // Do attacks and other actions
@@ -148,6 +176,8 @@ export class Level
           v.destroy();
       })
     }
+
+
   }
 
   destroy()

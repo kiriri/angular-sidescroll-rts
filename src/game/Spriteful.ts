@@ -41,8 +41,16 @@ export class Spriteful
 
   set_animation_frame(index:number)
   {
+    try
+    {
     this.sprite.texture.frame.x = this.current_animation.frame_size[0] * (index % this.current_animation.length);
     this.sprite.texture.updateUvs();
+    }
+    catch(e)
+    {
+      console.log(this);
+      throw e;
+    }
   }
 
   set_texture(texture:PIXI.Texture)

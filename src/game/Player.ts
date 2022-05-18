@@ -11,7 +11,7 @@ export class Player
   money : number = 100; // currently held money
   income : number = 0; // money per second
   deck:UnitTemplate[] = Object.values(units).map(v=>{return {...v}}); // all units this player can spawn
-  units : Set<UnitInstance> = new Set(); // spawned units of this player
+  units : UnitInstance[] = []; // spawned units of this player
   last_spawn_time : Record<string,number> = {}; // unit-name -> last timestamp a unit was spawned
   xp : Record<string,number> = {}; // unit-name -> xp
   upgrades : Record<string,UnitUpgrade[]> = {}; // unit-name -> upgrade selection
